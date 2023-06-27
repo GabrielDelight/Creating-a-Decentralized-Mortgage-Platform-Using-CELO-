@@ -1,0 +1,49 @@
+.list_container {
+  padding: 10px;
+  display: flex;
+  background-color: white;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  /* height: 100vh; */
+}
+
+.list {
+  flex-basis: 46%;
+  padding: 10px;
+  margin: 10px;
+  box-shadow: 8px 20px 10px #dddddd;
+}
+
+@media (max-width: 600px) {
+  .list_container {
+    flex-direction: column;
+  }
+  .list {
+    flex-basis: 100%;
+  }
+}
+
+
+
+.button_container {
+  margin-top: 10px;
+}
+.button_container button {
+  padding: 8px 20px;
+  background-color: cornflowerblue;
+  border: none;
+  outline: none;
+  color: white;
+  cursor: pointer;
+}
+
+.button_container button:disabled {
+  background-color: red;
+}
+
+.bottom_footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
