@@ -3,7 +3,7 @@ import classes from "./Footer.module.css"
 const Footer = () => {
   return (
     <footer className={classes.footer}>
-        <p>Decentralized Travel Booking Dapp</p>        
+        <p>Decentralized Mortgage Platform Using CELO </p>        
     </footer>
   )
 }

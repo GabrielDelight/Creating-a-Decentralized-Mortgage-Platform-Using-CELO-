@@ -1,24 +1,18 @@
 import React, { useState } from "react";
 import classes from "./HeaderStyles.module.css";
 import { useCelo } from "@celo/react-celo";
-import BookedData from "../BookedData/BookedData";
+import CreateMortgage from "../  Mortgage /CreateMortgage";
 const Header = () => {
   const { connect } = useCelo();
-  const [isFlight, setIsFlight] = useState(false);
-  const [isHotel, setIsHotel] = useState(false);
+  const [formIsActive, setFormIsActive] = useState(false);
 
-  const toggleFlightHandler = () => {
-    setIsFlight(!isFlight);
+  const onCreateMortgageHandler = () => {
+    setFormIsActive(!formIsActive);
+  };
+  const MyMorgageHandler = () => {
   };
 
-  const toggleHotelHandler = () => {
-    setIsHotel(!isHotel);
-  };
 
-  const onCloseModal = () => {
-    setIsHotel(false);
-    setIsFlight(false);
-  };
 
   return (
     <>
@@ -28,20 +22,18 @@ const Header = () => {
         </div>
 
         <div className={classes.nav}>
-          <button onClick={toggleFlightHandler}>Create Mortgage </button>
-          <button onClick={toggleHotelHandler}>My Mortages</button>
+          <button onClick={onCreateMortgageHandler}>Create Mortgage </button>
+          <button onClick={MyMorgageHandler}>My Mortgage</button>
 
           <button className={classes.wallet_connect} onClick={connect}>
             Wallet connect
           </button>
         </div>
       </header>
-      {isFlight && (
-        <BookedData bookingType={"flight"} onCloseModal={onCloseModal} />
-      )}
-      {isHotel && (
-        <BookedData bookingType={"hotel"} onCloseModal={onCloseModal} />
-      )}
+    
+    {formIsActive?<CreateMortgage onCloseModal={onCreateMortgageHandler} />: null }
+
+        
     </>
   );
 };

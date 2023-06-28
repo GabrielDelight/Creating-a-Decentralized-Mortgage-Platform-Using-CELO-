@@ -1,12 +1,13 @@
 import React from "react";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
-import Mortgage from "./components/Mortage/Mortgage";
+import Mortgage from "./components/  Mortgage /Mortgage";
 
 function App() {
   return (
     <div className="body">
       <Header />
+      <Mortgage />
       <Mortgage />
       <Footer />
     </div>
