@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import classes from "./HeaderStyles.module.css";
 import { useCelo } from "@celo/react-celo";
-import CreateMortgage from "../  Mortgage /CreateMortgage";
+import CreateMortgage from "../CreateMortgage/CreateMortgage";
+import Mortgagors from "../Mortgators/Mortgagors";
 const Header = () => {
   const { connect } = useCelo();
   const [formIsActive, setFormIsActive] = useState(false);
+  const [showPortfolio, setShowPortfolio] = useState(false);
 
   const onCreateMortgageHandler = () => {
     setFormIsActive(!formIsActive);
   };
-  const MyMorgageHandler = () => {
+  const LoanPortfolioHandler = () => {
+    setShowPortfolio(!showPortfolio)
   };
 
 
@@ -23,7 +26,7 @@ const Header = () => {
 
         <div className={classes.nav}>
           <button onClick={onCreateMortgageHandler}>Create Mortgage </button>
-          <button onClick={MyMorgageHandler}>My Mortgage</button>
+          <button onClick={LoanPortfolioHandler}>Loan portfolio</button>
 
           <button className={classes.wallet_connect} onClick={connect}>
             Wallet connect
@@ -32,7 +35,7 @@ const Header = () => {
       </header>
     
     {formIsActive?<CreateMortgage onCloseModal={onCreateMortgageHandler} />: null }
-
+{showPortfolio && <Mortgagors payButtonVisibility={true} closeModal={LoanPortfolioHandler} />}
         
     </>
   );

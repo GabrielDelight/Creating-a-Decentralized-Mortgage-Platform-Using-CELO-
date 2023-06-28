@@ -1,3 +1,23 @@
+/* // Account */
+
+.account_contaner {
+  width: 100%;
+  height: 40vh;
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: url("https://images.pexels.com/photos/4814061/pexels-photo-4814061.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1") no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+
+}
+
+.contract_balance {
+  /* font-size: 40px; */
+}
+
 .list_container {
   padding: 10px;
   display: flex;
@@ -11,7 +31,8 @@
   flex-basis: 46%;
   padding: 10px;
   margin: 10px;
-  box-shadow: 8px 20px 10px #dddddd;
+  box-shadow: 6px 12px 10px #dddddd;
+  border-radius: 10px;
 }
 
 @media (max-width: 600px) {
@@ -35,6 +56,7 @@
   outline: none;
   color: white;
   cursor: pointer;
+  margin-right: 10px;
 }
 
 .button_container button:disabled {

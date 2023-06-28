@@ -8,7 +8,6 @@ function App() {
     <div className="body">
       <Header />
       <Mortgage />
-      <Mortgage />
       <Footer />
     </div>
   );
