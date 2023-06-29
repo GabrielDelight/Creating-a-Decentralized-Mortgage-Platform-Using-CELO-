@@ -12,8 +12,8 @@ const MortgagorsList = (props) => {
     <>
     
     <div className={classes.container_list}>
-      <p><b>Home Price</b>:</p>
-      <p><b>Down payment</b> </p>
+      <p><b>Home Price:</b>:</p>
+      <p><b>Down payment:</b> </p>
       <p><b>Loan Amount</b>: 5 CELO</p>
       <p><b>Loan Term</b>:</p>
       <p><b>Start Date</b>:</p>

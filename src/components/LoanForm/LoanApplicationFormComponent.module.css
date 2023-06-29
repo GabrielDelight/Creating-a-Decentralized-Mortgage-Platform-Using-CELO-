@@ -1,0 +1,49 @@
+.container {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(221, 221, 221, 0.704);
+    z-index: 100;
+  }
+  
+  .wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: auto;
+    background-color: white;
+    padding: 10px;
+  }
+  
+  @media (max-width: 600px) {
+    .wrapper {
+      width: 90%;
+    }
+  }
+  
+  .wrapper input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    margin-bottom: 10px;
+    font-size: 17px;
+    background-color: rgba(235, 235, 235, 0.385);
+    transition: all ease 0.5s;
+  }
+  
+  .wrapper input:focus,
+  .wrapper input:hover {
+    background-color: rgb(224, 224, 224);
+  }
+  
+  .wrapper input[type="button"] {
+    background-color: cornflowerblue;
+    color: white;
+  }
+  

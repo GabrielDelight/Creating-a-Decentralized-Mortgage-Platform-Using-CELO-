@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import classes from "./CreateMortgage.module.css";
-const CreateMortgage = (props) => {
+import classes from "./LoanApplicationFormComponent.module.css";
+const LoanApplicationFormComponent = (props) => {
   const [formData, setFormData] = useState({});
   const onHandleClick = (el) => {
-    if (el.target.id === "parent-div") {
-      props.onCloseModal();
+    if (el.target.id === "parent--div") {
+      props.closeModal();
       console.log("Closibng");
     }
   };
@@ -23,33 +23,29 @@ const CreateMortgage = (props) => {
   };
 
   return (
-    <div className={classes.container} id="parent-div" onClick={onHandleClick}>
+    <div className={classes.container} id="parent--div" onClick={onHandleClick}>
       <div className={classes.wrapper}>
         <div>
-          <input
-            onChange={onChnageHandler}
-            name="lenderName"
-            type="text"
-            placeholder="Lender name"
-          />
-          <input
+        <input
             onChange={onChnageHandler}
             name="LenderDescription"
             type="text"
-            placeholder="Lender Description"
+            placeholder="Full name"
           />
+          <input
+            onChange={onChnageHandler}
+            name="scorePoint"
+            type="number"
+            placeholder="Score point"
+          />
+   
           <input
             onChange={onChnageHandler}
             name="minimumAmount"
             type={"number"}
-            placeholder="Maximim: 2 CELO"
+            placeholder="Loan amount: 2 CELO"
           />
-          <input
-            onChange={onChnageHandler}
-            name="maximumAmount"
-            type={"number"}
-            placeholder="Minimum: 5 CELO"
-          />
+
           <input
             onChange={onChnageHandler}
             name="loanTerms"
@@ -75,7 +71,7 @@ const CreateMortgage = (props) => {
           <input
             onSubmit={onSubmithandler}
             type={"button"}
-            value={"Create Mortgage"}
+            value={"Apply"}
           />
         </div>
       </div>
@@ -83,4 +79,4 @@ const CreateMortgage = (props) => {
   );
 };
 
-export default CreateMortgage;
+export default LoanApplicationFormComponent;

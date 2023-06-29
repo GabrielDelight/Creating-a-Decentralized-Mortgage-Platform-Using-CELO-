@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import Deposit from "../Deposit/Deposit";
+import LoanApplicationFormComponent from "../LoanForm/LoanApplicationFormComponent";
 import Mortgators from "../Mortgators/Mortgagors";
 import Withdraw from "../Withdraw/Withdraw";
 import classes from "./MortageList.module.css";
 const MortgageList = () => {
-  const [isDisabbled, setIsDisabled] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [isDeposit, setIsDeposit] = useState(false);
   const [isWithdraw, setIsWithdraw] = useState(false);
   const [showMortgagors, setShowMortgagors] = useState(false);
+  const [showForm, setSowForm] = useState(false);
 
   const onToggleDepositHandler = () => {
     setIsDeposit(!isDeposit);
@@ -15,8 +17,12 @@ const MortgageList = () => {
   const onToggleWithdrawHandler = () => {
     setIsWithdraw(!isWithdraw);
   };
-  const MorrtageHandler = () => {
+  const MortageHandler = () => {
     setShowMortgagors(!showMortgagors);
+  };
+
+  const applicationFomrHandler = () => {
+    setSowForm(!showForm);
   };
 
   return (
@@ -27,17 +33,18 @@ const MortgageList = () => {
         <br />
         <p>Minimum: 2 celo</p>
         <p>Maximum: 5 celo</p>
-        Terms: 2, 5 years
+        <p>Interest Rate: 4%</p>
+        <p>Loan Term: 2, 5 years</p>
         <br />
         <br />
         <p>Product: Student and parents loan</p>
-        <p>Contract: 0x49bE700C28d7700C200C2700C2B</p>
+        <p>Creator: 0x49bE700C28d7700C200C2700C2B</p>
         <div className={classes.bottom_footer}>
           <div className={classes.button_container}>
-            {true ? (
+            {false ? (
               <>
                 <button
-                  disabled={isDisabbled}
+                  disabled={isDisabled}
                   onClick={onToggleDepositHandler}
                   style={{ backgroundColor: "green" }}
                 >
@@ -45,24 +52,28 @@ const MortgageList = () => {
                 </button>
 
                 <button
-                  disabled={isDisabbled}
+                  disabled={isDisabled}
                   onClick={onToggleWithdrawHandler}
                   style={{ backgroundColor: "hotpink" }}
                 >
                   Withdraw
                 </button>
                 <button
-                  disabled={isDisabbled}
-                  onClick={MorrtageHandler}
+                  disabled={isDisabled}
+                  onClick={MortageHandler}
                   style={{ backgroundColor: "black" }}
                 >
                   My Mortgagors
                 </button>
               </>
             ) : (
-              <button disabled={isDisabbled}>
-                {isDisabbled ? "Not available" : "Apply"}
-              </button>
+              <>
+                {isDisabled ? (
+                  <button disabled>Not available</button>
+                  ) : (
+                  <button onClick={applicationFomrHandler}>Apply</button>
+                )}
+              </>
             )}
           </div>
           <div>
@@ -72,8 +83,15 @@ const MortgageList = () => {
       </div>
       {isDeposit ? <Deposit closeModal={onToggleDepositHandler} /> : null}
       {isWithdraw ? <Withdraw closeModal={onToggleWithdrawHandler} /> : null}
-      {showMortgagors ? <Mortgators closeModal={MorrtageHandler} payButtonVisibility={false} /> : null}
-      
+      {showMortgagors ? (
+        <Mortgators closeModal={MortageHandler} payButtonVisibility={false} />
+      ) : null}
+      {showForm ? (
+        <LoanApplicationFormComponent
+          closeModal={applicationFomrHandler}
+          payButtonVisibility={false}
+        />
+      ) : null}
     </>
   );
 };
