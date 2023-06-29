@@ -36,7 +36,7 @@ const CreateMortgage = (props) => {
             onChange={onChnageHandler}
             name="LenderDescription"
             type="text"
-            placeholder="Lender Description"
+            placeholder="Lender description"
           />
           <input
             onChange={onChnageHandler}
@@ -53,7 +53,7 @@ const CreateMortgage = (props) => {
           <input
             onChange={onChnageHandler}
             name="loanTerms"
-            type={"text"}
+            type={"number"}
             placeholder="Loan terms: eg 2, 3, 5 years"
           />
           <input

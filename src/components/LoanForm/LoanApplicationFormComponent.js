@@ -48,9 +48,9 @@ const LoanApplicationFormComponent = (props) => {
 
           <input
             onChange={onChnageHandler}
-            name="loanTerms"
-            type={"text"}
-            placeholder="Loan terms: eg 2, 3, 5 years"
+            name="loanTerm"
+            type={"number"}
+            placeholder="Loan term: eg 2, 3, 5 years"
           />
           <input
             onChange={onChnageHandler}

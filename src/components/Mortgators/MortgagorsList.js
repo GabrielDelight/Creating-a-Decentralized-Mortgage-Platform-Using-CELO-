@@ -8,6 +8,11 @@ const MortgagorsList = (props) => {
     setShowDeposit(!showDeposit)
   }
 
+  const loanUnderWaitingHandler  = () => {
+    
+  }
+
+
   return (
     <>
     
@@ -21,9 +26,14 @@ const MortgagorsList = (props) => {
       <p><b>Interest Rate</b>:</p>
       <p><b>Mortgagor Address</b>: </p>
       <p><b>Lender Address</b>:</p>
-      {props.payButtonVisibility && <>
+      {props.payButtonVisibility ? <>
       <br />
-      <button onClick={onPayHandler}>Pay</button>
+      <button onClick={onPayHandler}>Pay</button>      
+      </>:
+      <>
+      <br />
+      <button onClick={() => loanUnderWaitingHandler("approved")} style={{backgroundColor: "green"}}>Approved</button>
+      <button onClick={() => loanUnderWaitingHandler("rejected")} style={{backgroundColor: "red"}}>Reject</button>
       </>
       }
     </div>
