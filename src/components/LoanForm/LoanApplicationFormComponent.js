@@ -28,7 +28,13 @@ const LoanApplicationFormComponent = (props) => {
         <div>
         <input
             onChange={onChnageHandler}
-            name="LenderDescription"
+            name="homePrice"
+            type="text"
+            placeholder="Home Price"
+          />
+          <input
+            onChange={onChnageHandler}
+            name="fullName"
             type="text"
             placeholder="Full name"
           />
@@ -38,10 +44,10 @@ const LoanApplicationFormComponent = (props) => {
             type="number"
             placeholder="Score point"
           />
-   
+
           <input
             onChange={onChnageHandler}
-            name="minimumAmount"
+            name="loanAmount"
             type={"number"}
             placeholder="Loan amount: 2 CELO"
           />
@@ -68,11 +74,7 @@ const LoanApplicationFormComponent = (props) => {
               placeholder="Minimum: 5 CELO"
             />
           </div>
-          <input
-            onSubmit={onSubmithandler}
-            type={"button"}
-            value={"Apply"}
-          />
+          <input onSubmit={onSubmithandler} type={"button"} value={"Apply"} />
         </div>
       </div>
     </div>

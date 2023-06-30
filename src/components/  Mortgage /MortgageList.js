@@ -38,10 +38,10 @@ const MortgageList = () => {
         <br />
         <br />
         <p>Product: Student and parents loan</p>
-        <p>Creator: 0x49bE700C28d7700C200C2700C2B</p>
+        <p>Lender address: 0x49bE700C28d7700C200C2700C2B</p>
         <div className={classes.bottom_footer}>
           <div className={classes.button_container}>
-            {!false ? (
+            {false ? (
               <>
                 <button
                   disabled={isDisabled}
@@ -70,7 +70,7 @@ const MortgageList = () => {
               <>
                 {isDisabled ? (
                   <button disabled>Not available</button>
-                  ) : (
+                ) : (
                   <button onClick={applicationFomrHandler}>Apply</button>
                 )}
               </>
