@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import ContractHook from "../../Hooks/ContractHook";
 import Deposit from "../Deposit/Deposit";
-import LoanApplicationFormComponent from "../LoanForm/LoanApplicationFormComponent";
+import LoanApplicationFormComponent from "../LoanApplicationForm/LoanApplicationFormComponent";
 import Mortgators from "../Mortgators/Mortgagors";
 import Withdraw from "../Withdraw/Withdraw";
 import classes from "./MortageList.module.css";
-const MortgageList = () => {
+import BigNumber from "bignumber.js";
+const MortgageList = (props) => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isDeposit, setIsDeposit] = useState(false);
   const [isWithdraw, setIsWithdraw] = useState(false);
@@ -25,23 +27,27 @@ const MortgageList = () => {
     setSowForm(!showForm);
   };
 
+  // console.log(props)
+  const { address } = ContractHook();
+  let address1 = address.toUpperCase().toString();
+  let address2 = props.data.ownerAddress.toUpperCase().toString();
   return (
     <>
       <div className={classes.list}>
-        <h1>Express Mortage</h1>
-        <h3>Best Morrtage Platform</h3>
+        <h1>{props.data.lenderName}</h1>
+        <h3>{props.data.lenderDescription}</h3>
         <br />
-        <p>Minimum: 2 celo</p>
-        <p>Maximum: 5 celo</p>
-        <p>Interest Rate: 4%</p>
-        <p>Loan Term: 2, 5 years</p>
+        <p>Minimum: {props.data.minimumAmount} celo</p>
+        <p>Maximum: {props.data.maximumAmount} celo</p>
+        <p>Interest rate: {props.data.interestRate}%</p>
+        <p>Loan Term: {props.data.loanTerms} years</p>
         <br />
         <br />
-        <p>Product: Student and parents loan</p>
-        <p>Lender address: 0x49bE700C28d7700C200C2700C2B</p>
+        <p>Product: {props.data.products}</p>
+        <p>Lender address: {props.data.ownerAddress}</p>
         <div className={classes.bottom_footer}>
           <div className={classes.button_container}>
-            {false ? (
+            {address1.includes(address2) ? (
               <>
                 <button
                   disabled={isDisabled}
@@ -65,11 +71,16 @@ const MortgageList = () => {
                 >
                   My Mortgagors
                 </button>
+                {parseInt(props.data.balance) == 0 ? (
+                  <button disabled>Not available, low balance</button>
+                ) : (
+                  <button onClick={applicationFomrHandler}>Apply</button>
+                )}
               </>
             ) : (
               <>
-                {isDisabled ? (
-                  <button disabled>Not available</button>
+                {parseInt(props.data.balance) == 0 ? (
+                  <button disabled>Not available, low balance</button>
                 ) : (
                   <button onClick={applicationFomrHandler}>Apply</button>
                 )}
@@ -77,17 +88,20 @@ const MortgageList = () => {
             )}
           </div>
           <div>
-            <p>Balance: 12 Celo</p>
+            <p>Balance: {
+            new BigNumber(props.data.balance).dividedBy(1e18).toString()
+            } Celo</p>
           </div>
         </div>
       </div>
-      {isDeposit ? <Deposit closeModal={onToggleDepositHandler} /> : null}
-      {isWithdraw ? <Withdraw closeModal={onToggleWithdrawHandler} /> : null}
+      {isDeposit ? <Deposit closeModal={onToggleDepositHandler} index={props.index} /> : null}
+      {isWithdraw ? <Withdraw closeModal={onToggleWithdrawHandler} index={props.index}  /> : null}
       {showMortgagors ? (
-        <Mortgators closeModal={MortageHandler} payButtonVisibility={false} />
+        <Mortgators lenderAddress={props.data.ownerAddress} closeModal={MortageHandler} payButtonVisibility={false} />
       ) : null}
       {showForm ? (
         <LoanApplicationFormComponent
+        data={props.data}
           closeModal={applicationFomrHandler}
           payButtonVisibility={false}
         />

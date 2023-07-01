@@ -1,175 +1,154 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
-import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract baseContract {
-    address internal admin;
-    uint256 internal incrementingSeatNumber = 1;
-    uint256 incrementingRoomNUmber = 1;
-    string public flightStatus = "open";
-
-    constructor() {
-        admin = msg.sender;
+contract MortgageContract {
+    address admin; 
+    uint256 publicArrayIndex;
+    struct MortgageData {
+        address ownerAddress;
+        string lenderName;
+        string lenderDescription;
+        uint256 minimumAmount;
+        uint256 maximumAmount;
+        uint256 loanTerms;
+        string products;
+        string startDate;
+        string interestRate;
+        uint256 balance;
     }
 
-    // Flight booking struct
-    struct flightBookingStruct {
-        address bookingOwnerAddress;
-        string flightNumber;
-        uint256 paymentAmount;
-        string flightStatus;
-        uint256 seatNumber;
-        string fareTypes;
-        string LeavingOn;
-        string returningOn;
-        string toWhere;
-        string itinerary;
-        uint256 numberOfPassangers;
-    }
+    MortgageData[] internal MortgageDataArray;
 
-    // Hotel Booking struct
-    struct HotelBookingStruct {
-        address bookingOwnerAddress;
-        uint256 bookingNumber;
-        string checkIn;
-        string checkOut;
-        string goingTo;
-        uint256 numberOfGuest;
-        uint256 numberOfRooms;
-        string purposeOfTraveling;
-        uint256 paymentAmount;
-    }
-
-    mapping(address => flightBookingStruct) public flightBookingAddresses;
-    mapping(address => HotelBookingStruct) public hotelBookingAddress;
-    mapping(address => uint256) public balanceAddress;
-
-    modifier onlyAdmin() {
-        require(msg.sender == admin, "You are not authorized");
-        _;
-    }
-
-    // Modifier for flight staus
-    modifier checkFlightStatus() {
-        require(
-            keccak256(abi.encodePacked(flightStatus)) ==
-                keccak256(abi.encodePacked("open")),
-            "Flight status is closed"
+    // Create Morgage array
+    function createMortgage(
+        string memory lenderName,
+        string memory lenderDescription,
+        uint256 minimumAmount,
+        uint256 maximumAmount,
+        uint256 loanTerms,
+        string memory products,
+        string memory startDate,
+        string memory interestRate
+    ) public {
+        address owner = msg.sender;
+        uint256 _balance;
+        MortgageData memory newData = MortgageData(
+            owner,
+            lenderName,
+            lenderDescription,
+            minimumAmount,
+            maximumAmount,
+            loanTerms,
+            products,
+            startDate,
+            interestRate,
+            _balance
         );
-        _;
+
+        MortgageDataArray.push(newData);
     }
 
-    // Deposit to Contract
-    function deposit() external payable {
-        balanceAddress[msg.sender] += msg.value;
+    // Viwing created mortgages
+    function viewMorgages() public view returns (MortgageData[] memory) {
+        return MortgageDataArray;
     }
 
-    // Check contract balance
+    // Lender Deposit
+    function depositFunctionForLender(uint256 _index) external payable {
+        require(
+            _index < MortgageDataArray.length,
+            "Your index is greater than the array length"
+        );
+        uint256 oldBlance = MortgageDataArray[_index].balance;
+        MortgageDataArray[_index].balance = oldBlance += msg.value;
+    }
+
+    // Lender withdraw
+    function withdrawFunctionForLender(
+        uint256 _amount,
+        uint256 _index,
+        address payable _address
+    ) public {
+        uint256 oldBlance = MortgageDataArray[_index].balance;
+        MortgageDataArray[_index].balance = oldBlance -= _amount;
+        _address.transfer(_amount);
+    }
+
+    // MortgagorsData *******************************************************************************************
+    struct MortgagorsData {
+        string fullName;
+        string homePrice;
+        string downPayment;
+        uint256 loanAmount;
+        uint256 loanTerm;
+        string startDate;
+        string status;
+        string interestRate;
+        address mortgagorAddress;
+        address lenderAddress;
+        uint256 scorePoint;
+    }
+
+    MortgagorsData[] internal MorgagorsDataArray;
+
+    // Create Mortgagors
+    function createMortgagor(
+        string memory fullName,
+        string memory homePrice,
+        string memory downPayment,
+        uint256 loanAmount,
+        uint256 loanTerm,
+        string memory startDate,
+        string memory interestRate,
+        address lenderAddress,
+        uint256 scorePoint
+    ) public {
+        MortgagorsData memory newMortgagor = MortgagorsData(
+            fullName,
+            homePrice,
+            downPayment,
+            loanAmount,
+            loanTerm,
+            startDate,
+            interestRate,
+            "pending",
+            msg.sender,
+            lenderAddress,
+            scorePoint
+        );
+        MorgagorsDataArray.push(newMortgagor);
+    }
+
+    function viewMortgagors() public view returns (MortgagorsData[] memory) {
+        return MorgagorsDataArray;
+    }
+
+    // Approve or reject
+    function loanUnderWaitingFunction(string memory _status, uint256 _index)
+        public
+    {
+        require(
+            _index < MorgagorsDataArray.length,
+            "Morgagors not found. Index is freater than morgagors array"
+        );
+        MorgagorsDataArray[_index].status = _status;
+    }
+
+    function viewMyMortgagors() public {
+        // Will be implement in the front end
+        // Viewing mortaggors that has a lender addres of user
+    }
+
+    //  Get contract balance
     function contractBalance() public view returns (uint256) {
         return address(this).balance;
     }
 
-    // User to withdraw balance
-    function balanceWithdraw(uint256 _amount) public {
-        uint256 amountInWei = _amount * 1 ether;
-
-        require(
-            balanceAddress[msg.sender] >= amountInWei,
-            "Insufficient funds"
-        );
-        payable(msg.sender).transfer(amountInWei);
-        balanceAddress[msg.sender] -= amountInWei;
-    }
-
-    // Withdraw all funds (only admin)
-    function withdrawAllFunds() public onlyAdmin {
+    function withdrawAllFunds()  public payable{
         payable(admin).transfer(contractBalance());
-        balanceAddress[msg.sender] = 0;
+    }
+
+    function test() public pure returns(string memory) {
+        return "Everything is working";
     }
 }
-
-// Flight booking contract....
-contract FlightBooking is baseContract {
-    function FlightBookings(
-        string memory fareTypes,
-        string memory LeavingOn,
-        string memory returningOn,
-        string memory toWhere,
-        string memory itinerary,
-        uint256 numberOfPassangers
-    ) public checkFlightStatus {
-        require(
-            balanceAddress[msg.sender] >= 2 ether,
-            "Insufficient funds. Please deposit 2 eth to wallet."
-        );
-
-        string memory airlineNumber = Strings.toString(block.timestamp); // Convert string to number
-        // Concatenating 2 strings
-        string memory joinedFlightNumber = string.concat("AC", airlineNumber);
-
-        flightBookingStruct memory booking = flightBookingStruct(
-            address(msg.sender),
-            joinedFlightNumber,
-            uint256(1 ether),
-            flightStatus,
-            incrementingSeatNumber,
-            fareTypes,
-            LeavingOn,
-            returningOn,
-            toWhere,
-            itinerary,
-            numberOfPassangers
-        );
-        flightBookingAddresses[msg.sender] = booking;
-        incrementingSeatNumber + 1; // Incrementing the seaat number
-        balanceAddress[msg.sender] -= 2 ether; // Deducting funds (2 ether)
-    }
-}
-
-// Hotel booking contract
-contract HotelBooking is FlightBooking {
-    function HotelBookings(
-        string memory goingTo,
-        uint256 numberOfGuest,
-        uint256 numberOfRooms,
-        string memory purposeOfTraveling,
-        string memory checkIn,
-        string memory checkOut
-    ) public {
-        // Check insufficnent funds
-        require(
-            balanceAddress[msg.sender] >= 1 ether,
-            "Insufficient funds, please deposit at least 1 eth to wallet."
-        );
-
-        uint256 bookingNumber = block.timestamp;
-
-        HotelBookingStruct memory booking = HotelBookingStruct(
-            address(msg.sender),
-            bookingNumber,
-            checkIn,
-            checkOut,
-            goingTo,
-            numberOfGuest,
-            numberOfRooms,
-            purposeOfTraveling,
-            uint256(1 ether)
-        );
-        hotelBookingAddress[msg.sender] = booking;
-        balanceAddress[msg.sender] -= 1 ether; // Deducting funds (1 ether)
-    }
-}
-
-// Deploying contract that contains the booking for light  and hotel
-contract BookingContract is HotelBooking {
-    function test() public pure returns (string memory) {
-        return "Everything is alright";
-    }
-}
-
-
-
-    // Deposit to Contract
-    function deposit() external payable {
-        balanceAddress[msg.sender] += msg.value;
-    }

@@ -3,6 +3,7 @@ import classes from "./HeaderStyles.module.css";
 import { useCelo } from "@celo/react-celo";
 import CreateMortgage from "../CreateMortgage/CreateMortgage";
 import Mortgagors from "../Mortgators/Mortgagors";
+import ContractHook from "../../Hooks/ContractHook";
 const Header = () => {
   const { connect } = useCelo();
   const [formIsActive, setFormIsActive] = useState(false);
@@ -12,9 +13,8 @@ const Header = () => {
     setFormIsActive(!formIsActive);
   };
   const LoanPortfolioHandler = () => {
-    setShowPortfolio(!showPortfolio)
+    setShowPortfolio(!showPortfolio);
   };
-
 
 
   return (
@@ -33,10 +33,16 @@ const Header = () => {
           </button>
         </div>
       </header>
-    
-    {formIsActive?<CreateMortgage onCloseModal={onCreateMortgageHandler} />: null }
-{showPortfolio && <Mortgagors payButtonVisibility={true} closeModal={LoanPortfolioHandler} />}
-        
+
+      {formIsActive ? (
+        <CreateMortgage onCloseModal={onCreateMortgageHandler} />
+      ) : null}
+      {showPortfolio && (
+        <Mortgagors
+          payButtonVisibility={true}
+          closeModal={LoanPortfolioHandler}
+        />
+      )}
     </>
   );
 };

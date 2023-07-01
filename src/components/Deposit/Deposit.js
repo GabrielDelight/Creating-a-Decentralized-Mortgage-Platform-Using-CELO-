@@ -14,6 +14,8 @@ const Deposit = (props) => {
   };
 
   const onSubmitHandler = () => {
+
+
     if (amount.length < 1) return alert("Please input a value");
     const confirm = window.confirm(
       `Are you sure you want to deposit ${amount} CELO`
@@ -23,7 +25,7 @@ const Deposit = (props) => {
       setIsLoading(true);
 
       contractInstance.methods
-        .deposit()
+        .depositFunctionForLender(props.index)
         .send({
           from: address,
           value: kit.web3.utils.toWei(amount, "ether"),
@@ -36,7 +38,7 @@ const Deposit = (props) => {
           console.log("Receipt:", receipt);
           Swal.fire(
             "Deposit successful!",
-            `You were successful in adding ${amount} CELO to your booking wallet.`,
+            `You were successful in adding ${amount} CELO.`,
             "success"
           );
 
@@ -52,7 +54,7 @@ const Deposit = (props) => {
 
           Swal.fire(
             "Transaction failed!",
-            `Attempt to deposit to the booking wallet failed in the transaction.`,
+            error.message,
             "error"
           );
           setIsLoading(false);

@@ -15,6 +15,11 @@ export const abiData = [
 	{
 		"inputs": [
 			{
+				"internalType": "address",
+				"name": "ownerAddress",
+				"type": "address"
+			},
+			{
 				"internalType": "string",
 				"name": "lenderName",
 				"type": "string"
@@ -50,9 +55,9 @@ export const abiData = [
 				"type": "string"
 			},
 			{
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "interestRate",
-				"type": "string"
+				"type": "uint256"
 			}
 		],
 		"name": "createMortgage",
@@ -98,9 +103,9 @@ export const abiData = [
 				"type": "string"
 			},
 			{
-				"internalType": "address",
+				"internalType": "string",
 				"name": "lenderAddress",
-				"type": "address"
+				"type": "string"
 			},
 			{
 				"internalType": "uint256",
@@ -127,6 +132,19 @@ export const abiData = [
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "getAddress",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "string",
@@ -146,7 +164,20 @@ export const abiData = [
 	},
 	{
 		"inputs": [],
-		"name": "viewMorgages",
+		"name": "test",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "viewMortgages",
 		"outputs": [
 			{
 				"components": [
@@ -191,9 +222,9 @@ export const abiData = [
 						"type": "string"
 					},
 					{
-						"internalType": "string",
+						"internalType": "uint256",
 						"name": "interestRate",
-						"type": "string"
+						"type": "uint256"
 					},
 					{
 						"internalType": "uint256",
@@ -261,9 +292,9 @@ export const abiData = [
 						"type": "address"
 					},
 					{
-						"internalType": "address",
+						"internalType": "string",
 						"name": "lenderAddress",
-						"type": "address"
+						"type": "string"
 					},
 					{
 						"internalType": "uint256",
@@ -284,6 +315,13 @@ export const abiData = [
 		"name": "viewMyMortgagors",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdrawAllFunds",
+		"outputs": [],
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{

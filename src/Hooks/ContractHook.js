@@ -10,8 +10,10 @@ const ContractHook = () => {
   const { address } = useCelo();
   const [depositBalance, setDepositBalance] = useState("");
   const [contractBalance, setContractBalance] = useState("");
-  const [flightStatus, setFlightStatus] = useState("");
   const [metamaskWallet, setMetamaskWallet] = useState("");
+  const [mortgages, setMortgages] = useState([]);
+  const [mortgagors, setMortgors] = useState([]);
+  const [getAddressFromContract, setGetAddressFromContract] = useState();
 
   const web3 = new Web3("https://alfajores-forno.celo-testnet.org");
   const kit = newKitFromWeb3(web3);
@@ -22,19 +24,21 @@ const ContractHook = () => {
 
   let contractInstance = new kit.web3.eth.Contract(
     abiData,
-    "0x0731B5fe80649E337e8B8b520a0F636fC8C248c8"
+    "0xB4eCC0602D082E718B1011B43ac3b71b8EC7b96b"
   );
+
+  // console.log("address,", address)
 
   useEffect(() => {
     async function isConnectedToContract() {
       try {
         const result = await contractInstance.methods.test().call();
+        console.log("Test result:", result);
 
-        // 1. Get Flight status
-        const flightStatusVar = await contractInstance.methods
-          .flightStatus()
+        const getAddressFrpmCOntract = await contractInstance.methods
+          .getAddress()
           .call();
-        setFlightStatus(flightStatusVar);
+        setGetAddressFromContract(getAddressFrpmCOntract);
 
         // Get metamask balance
         let balance = await kit.web3.eth.getBalance(address);
@@ -47,13 +51,17 @@ const ContractHook = () => {
           new BigNumber(contractBalance).dividedBy(1e18).toString()
         );
 
-        // Get deposit amount
-        const depositBalance = await contractInstance.methods
-          .balanceAddress(address)
+        const getMortgages = await contractInstance.methods
+          .viewMortgages()
           .call();
-        setDepositBalance(
-          new BigNumber(depositBalance).dividedBy(1e18).toString()
-        );
+        setMortgages(getMortgages);
+
+
+        const getMortgagors = await contractInstance.methods
+        .viewMortgagors()
+        .call();
+      
+        setMortgors(getMortgagors)
       } catch (error) {
         console.log(error);
       }
@@ -67,46 +75,16 @@ const ContractHook = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const onWithdrawAllFunction = () => {
-    contractInstance.methods
-      .withdrawAllFunds()
-      .send({
-        from: address,
-        gas: 3000000,
-      })
-
-      .on("transactionHash", (hash) => {
-        console.log("Transaction hash:", hash);
-      })
-      .on("receipt", (receipt) => {
-        console.log("Receipt:", receipt);
-        Swal.fire(
-          "Withdrawal successful!",
-          `You have successfully transferred all funds from the contract wallet to your booking address.        .`,
-          "success"
-        );
-      })
-
-      .on("error", (error) => {
-        console.error("Error: occured", error);
-
-        Swal.fire(
-          "Transaction failed!",
-          `Attempt to withdraw from booking wallet balance failed in the transaction.`,
-          "error"
-        );
-      });
-  };
-
+  
   return {
     contractInstance,
     metamaskWallet,
-    flightStatus,
     contractBalance,
     depositBalance,
     kit,
     address,
-    onWithdrawAllFunction,
+    mortgages,    
+    mortgagors
   };
 };
 

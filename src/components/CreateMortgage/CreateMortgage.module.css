@@ -45,4 +45,5 @@
 .wrapper input[type="button"] {
   background-color: cornflowerblue;
   color: white;
+  cursor: pointer;
 }

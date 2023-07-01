@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
-import Mortgage from "./components/  Mortgage /Mortgage";
+import Mortgage from "./components/ Mortgage /Mortgage";
 
 function App() {
   return (

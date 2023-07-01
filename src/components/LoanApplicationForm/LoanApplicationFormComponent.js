@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import ContractHook from "../../Hooks/ContractHook";
-import classes from "./CreateMortgage.module.css";
+import classes from "./LoanApplicationFormComponent.module.css";
 import Swal from "sweetalert2";
 import Loading from "../LoadingIcon/Loading";
-
-const CreateMortgage = (props) => {
+const LoanApplicationFormComponent = (props) => {
   const [formData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-
   const onHandleClick = (el) => {
-    if (el.target.id === "parent-div") {
-      props.onCloseModal();
+    if (el.target.id === "parent--div") {
+      props.closeModal();
       console.log("Closibng");
     }
   };
@@ -27,32 +25,30 @@ const CreateMortgage = (props) => {
   const { contractInstance, address } = ContractHook();
 
   const onSubmithandler = () => {
-    console.log(formData);
     try {
-      setIsLoading(true);
-
       const {
-        lenderName,
-        lenderDescription,
-        minimumAmount,
-        maximumAmount,
-        loanTerms,
-        products,
-        startDate,
-        interestRate,
+        homePrice,
+        fullName,
+        downPayment,
+        scorePoint,
+        loanAmount,
+        loanTerm,
       } = formData;
 
+      let startData = new Date().toISOString();
+      setIsLoading(true);
+
       contractInstance.methods
-        .createMortgage(
-          address,
-          lenderName,
-          lenderDescription,
-          parseInt(minimumAmount),
-          parseInt(maximumAmount),
-          parseInt(loanTerms),
-          products,
-          new Date().toISOString(),
-          parseInt(interestRate)
+        .createMortgagor(
+          fullName,
+          homePrice,
+          downPayment,
+          loanAmount,
+          loanTerm,
+          startData,
+          props.data.interestRate,
+          props.data.ownerAddress,
+          scorePoint
         )
         .send({
           from: address,
@@ -64,8 +60,8 @@ const CreateMortgage = (props) => {
         .on("receipt", (receipt) => {
           console.log("Receipt:", receipt);
           Swal.fire(
-            "Successful!",
-            `You were successful in creating a mortgage.`,
+            "Application successful!",
+            `You were successful in applying fot a loan.`,
             "success"
           );
           setIsLoading(false);
@@ -75,7 +71,7 @@ const CreateMortgage = (props) => {
           console.error("Error: occured", error);
           Swal.fire(
             "Transaction failed!",
-            `Attempt to create a mortgage failed.`,
+            `Attempt to apply for  a mortgage failed.`,
             "error"
           );
           setIsLoading(false);
@@ -83,67 +79,57 @@ const CreateMortgage = (props) => {
     } catch (error) {
       console.log(error);
     }
+    console.log(formData);
   };
 
   return (
-    <div className={classes.container} id="parent-div" onClick={onHandleClick}>
+    <div className={classes.container} id="parent--div" onClick={onHandleClick}>
       <div className={classes.wrapper}>
         <div>
           <input
             onChange={onChnageHandler}
-            name="lenderName"
+            name="fullName"
             type="text"
-            placeholder="Lender name"
+            placeholder="Full name"
           />
           <input
             onChange={onChnageHandler}
-            name="lenderDescription"
-            type="text"
-            placeholder="Lender description"
+            name="homePrice"
+            type="number"
+            placeholder="Home Price in CELO"
           />
           <input
             onChange={onChnageHandler}
-            name="minimumAmount"
+            name="downPayment"
+            type="number"
+            placeholder="Down payment (initial house deposit) in CELO"
+          />
+          <input
+            onChange={onChnageHandler}
+            name="loanAmount"
             type={"number"}
-            placeholder="Maximim: 2 CELO"
+            placeholder="Loan amount: eg 2 CELO"
           />
+
           <input
             onChange={onChnageHandler}
-            name="maximumAmount"
+            name="scorePoint"
+            type="number"
+            placeholder="Score point"
+          />
+
+          <input
+            onChange={onChnageHandler}
+            name="loanTerm"
             type={"number"}
-            placeholder="Minimum: 5 CELO"
+            placeholder="Loan term: eg 2, 3, 5 years"
           />
-          <input
-            onChange={onChnageHandler}
-            name="loanTerms"
-            type={"number"}
-            placeholder="Loan terms: eg 2, 3, 5 years"
-          />
-          <input
-            onChange={onChnageHandler}
-            name="interestRate"
-            type={"number"}
-            placeholder="Integrest rate: 4, 5. 7"
-          />
-          <input
-            onChange={onChnageHandler}
-            name="products"
-            type={"text"}
-            placeholder="Products: Student, Parent, Business loan "
-          />
-          {!isLoading ? (
-            <input
-              onClick={onSubmithandler}
-              type={"button"}
-              value={"Create Mortgage"}
-            />
-          ) : (
-            <Loading />
-          )}{" "}
+
+          <input onClick={onSubmithandler} type={"button"} value={"Apply"} />
         </div>
       </div>
     </div>
   );
 };
 
-export default CreateMortgage;
+export default LoanApplicationFormComponent;

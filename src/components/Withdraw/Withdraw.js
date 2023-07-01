@@ -15,6 +15,8 @@ const Withdraw = (props) => {
 
   const onSubmitHandler = () => {
     if (amount.length < 1) return alert("Please input a value");
+    let index = props.index
+    let amountInWei =  kit.web3.utils.toWei(amount, "ether")
     const confirm = window.confirm(
       `Are you sure you want to withdraw ${amount} CELO`
     );
@@ -22,9 +24,8 @@ const Withdraw = (props) => {
     if (confirm) {
       // Withdraw to contractInstance
       setIsLoading(true);
-
       contractInstance.methods
-        .balanceWithdraw(amount)
+        .withdrawFunctionForLender(amountInWei,index, address )
         .send({
           from: address,
           gas: 3000000,
@@ -40,7 +41,6 @@ const Withdraw = (props) => {
             "success"
           );
           setIsLoading(false);
-
           setTimeout(() => {
             props.closeModal();
           }, 3000);
