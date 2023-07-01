@@ -27,7 +27,6 @@ const CreateMortgage = (props) => {
   const { contractInstance, address } = ContractHook();
 
   const onSubmithandler = () => {
-    console.log(formData);
     try {
       setIsLoading(true);
 
